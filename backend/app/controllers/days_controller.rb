@@ -1,7 +1,7 @@
 class DaysController < ApplicationController
     def index
         @days = Day.all
-        render json: @notes
+        render json: @days
     end
 
     def show
