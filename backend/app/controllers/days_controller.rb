@@ -1,11 +1,12 @@
 class DaysController < ApplicationController
     def index
         @days = Day.all
-        render json: @days
+        render json: @days, include: [:reflections, :observations]
     end
 
     def show
         @day = Day.find(params[:id])
+        render json: @day, include: [:reflections, :observations]
     end
 
     def create
