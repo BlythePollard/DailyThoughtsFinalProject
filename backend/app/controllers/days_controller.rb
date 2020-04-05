@@ -11,8 +11,7 @@ class DaysController < ApplicationController
 
     def create
         @day = Day.create(date: params[:day])
-        #@day = render json: Day.create(date: params[:day])
-        binding.pry
+        render json: @day
         # if current_user.days << @day
         #     render json: @day
         # else
