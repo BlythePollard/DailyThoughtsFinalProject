@@ -102,7 +102,23 @@ class Day {
 
     createDay(event) {
         event.preventDefault
-        fetch()
+        // const newDayForm = document.createElement('input')
+        //     newDayForm.setAttribute("type", "text")
+        //     newDayForm.setAttribute("value", "text")
+        // const submitButton = document.createElement('submit')    
+        // const newDayButton = document.getElementById("new-day-button")
+        // newDayButton.parentNode.appendChild(newDayForm)
+        const content = document.getElementById("new-day-info").value
+        fetch(DAYS_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                day: content
+            })
+            
+        })
     }
 } 
 

@@ -10,12 +10,14 @@ class DaysController < ApplicationController
     end
 
     def create
-        @day = Day.new(note_params)
-        if current_user.days << @day
-            render json: @day
-        else
-            #render error
-        end
+        #@day = Day.new(day_params)
+        @day = render json: Day.create(date: params[:day])
+        binding.pry
+        # if current_user.days << @day
+        #     render json: @day
+        # else
+        #     #render error
+        # end
     end
 
     def update
@@ -27,9 +29,9 @@ class DaysController < ApplicationController
         end
     end
 
-    private
+    # private
 
-    def day_params
-        params.require(:note).permit(:content, :user_id)
-    end
+    # def day_params
+    #     params.require(:day).permit(:content)
+    # end
 end
