@@ -58,7 +58,8 @@ class Day {
         const button = document.getElementById("new-day-button")
             button.addEventListener("click", event => {
                 this.createDay(event)
-            })
+            }) //creating a day here, upon each instantiation, is creating multiple instances-
+               //need to put this eventlistener somewhere else-but where?
     }
     
 
@@ -101,13 +102,7 @@ class Day {
     }
 
     createDay(event) {
-        event.preventDefault
-        // const newDayForm = document.createElement('input')
-        //     newDayForm.setAttribute("type", "text")
-        //     newDayForm.setAttribute("value", "text")
-        // const submitButton = document.createElement('submit')    
-        // const newDayButton = document.getElementById("new-day-button")
-        // newDayButton.parentNode.appendChild(newDayForm)
+        event.preventDefault()
         const content = document.getElementById("new-day-info").value
         fetch(DAYS_URL, {
             method: "POST",
@@ -118,11 +113,13 @@ class Day {
                 day: content
             })
         })
-        .then(resp => resp.json())
-        .then(newDay => {
-            console.log(newDay)
-        })
+        //.then(resp => resp.json())
+        // .then(newDay => {
+        //     console.log(newDay)
+        // })
     }
+
+    //deleteDay(event) //next make event listener
 } 
 
 class Observation {
