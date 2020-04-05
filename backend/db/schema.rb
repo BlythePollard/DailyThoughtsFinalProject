@@ -10,11 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_03_172331) do
+ActiveRecord::Schema.define(version: 2020_04_05_225759) do
 
   create_table "days", force: :cascade do |t|
     t.string "date"
-    t.integer "user_id"
   end
 
   create_table "observations", force: :cascade do |t|

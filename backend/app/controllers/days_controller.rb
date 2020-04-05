@@ -10,8 +10,8 @@ class DaysController < ApplicationController
     end
 
     def create
-        #@day = Day.new(day_params)
-        @day = render json: Day.create(date: params[:day])
+        @day = Day.create(date: params[:day])
+        #@day = render json: Day.create(date: params[:day])
         binding.pry
         # if current_user.days << @day
         #     render json: @day
