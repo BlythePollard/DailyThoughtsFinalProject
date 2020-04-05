@@ -117,7 +117,10 @@ class Day {
             body: JSON.stringify({
                 day: content
             })
-            
+        })
+        .then(resp => resp.json())
+        .then(newDay => {
+            console.log(newDay)
         })
     }
 } 
