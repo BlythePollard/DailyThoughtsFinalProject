@@ -8,9 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const button = document.getElementById("new-day-button")
     button.addEventListener("click", event => {
     createDay(event) })
-    button.addEventListener("click", event => {
-        createObservation(event)
-    })
+   
 })
 
 function fetchDays() {
@@ -44,18 +42,23 @@ function createDay(event) {
     containerDiv.innerHTML = content   
 }
 
-createObservation(event) {
-    const content = event.target.previousSibling.value
-    fetch(OBSERVATIONS_URL, {
-        method: "POST", 
-        headers: {
-            "Content-Type": "application/json", 
-        },
-        body: JSON.stringify({
-            observation: content
-        })
-    })
-}
+// // const observationsButton = document.getElementById("observations-button")
+// // observationsButton.addEventListener("click", event => {
+// //     createObservation(event)
+// // })
+
+// function createObservation(event) {
+//     const content = event.target.previousSibling.value
+//     fetch(OBSERVATIONS_URL, {
+//         method: "POST", 
+//         headers: {
+//             "Content-Type": "application/json", 
+//         },
+//         body: JSON.stringify({
+//             observation: content
+//         })
+//     })
+// }
 
 
 
@@ -99,7 +102,7 @@ class Day {
     getObservations() {
         const observations = this.observations
         observations.forEach((obs) => {
-            let thisObservation = new Observation(obs)
+            let thisObservation = new Observation(this, obs)
             this.displayObservations(thisObservation)
         })
     }
@@ -142,11 +145,36 @@ class Day {
 } 
 
 class Observation {
-    constructor(obs) {
+    constructor(day, obs) {
+        this.day = day.id
         this.content = obs.content
-        console.log(obs.content) 
+        this.newObs(day)
     }
+
+    newObs(day) {
+        const observationsButton = document.getElementById("observations-button")
+        observationsButton.addEventListener("click", event => {
+        this.createObservation(day, event)
+        })
+    }   
+
+    createObservation(day, event) {
+    const content = event.target.previousSibling.value
+    fetch(OBSERVATIONS_URL, {
+        method: "POST", 
+        headers: {
+            "Content-Type": "application/json", 
+        },
+        body: JSON.stringify({
+            observation: content,
+            day: day
+        })
+    })
 }
+}
+
+//alright, having same issue with double persistence above--WHERE TO PUT THE EVENT LISTENER?!
+
 
 class Reflection {
     constructor(ref) {
