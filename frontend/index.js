@@ -1,29 +1,16 @@
-// function fetchDays() {
-//     fetch(DAYS_URL)
-//     .then(resp => resp.json())
-//     .then(json => {
-//         json.forEach(day => {
-//             addDay(day)
-//         })
-//     })
-// }
-
-// function addDay(day) {
-//     console.log(day)
-// }
-// date 
-// reflections
-// observations
-
-//OO WAY TO WRITE THIS BELOW?
-//make sure i can create a day object & redisplay the data
 
 const BASE_URL = "http://localhost:3000"
 const DAYS_URL = `${BASE_URL}/days`
+const OBSERVATIONS_URL = `${BASE_URL}/observations`
 
 document.addEventListener("DOMContentLoaded", () => {
     fetchDays()
-    //Day.showDay() not a function? wtf?
+    const button = document.getElementById("new-day-button")
+    button.addEventListener("click", event => {
+    createDay(event) })
+    button.addEventListener("click", event => {
+        createObservation(event)
+    })
 })
 
 function fetchDays() {
@@ -32,9 +19,45 @@ function fetchDays() {
     .then(json => {
         json.forEach(day => {
             let newDay = new Day(day.id, day.date, day.observations, day.reflections)
+            //could do show logic here
         })
     })
 }
+
+function createDay(event) {
+    //event.preventDefault()
+    const content = document.getElementById("new-day-info").value
+    fetch(DAYS_URL, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            day: content
+        })
+    })
+    const main = document.querySelector("main")
+    const containerDiv = document.createElement('div')
+    main.append(containerDiv)
+    containerDiv.classList.add("day-container")
+    containerDiv.id = "main-container"
+    containerDiv.innerHTML = content   
+}
+
+createObservation(event) {
+    const content = event.target.previousSibling.value
+    fetch(OBSERVATIONS_URL, {
+        method: "POST", 
+        headers: {
+            "Content-Type": "application/json", 
+        },
+        body: JSON.stringify({
+            observation: content
+        })
+    })
+}
+
+
 
 class Day {
     constructor(id, date, observations, reflections) {
@@ -44,24 +67,34 @@ class Day {
         this.reflections = reflections
         this.showDay()
     }
-
-
+//separate storage of records from how it's getting rendered
     showDay() { 
         const main = document.querySelector("main")
         const containerDiv = document.createElement('div')
+        const br = document.createElement("BR")
             main.append(containerDiv)
             containerDiv.classList.add("day-container")
             containerDiv.id = "main-container"
-            containerDiv.innerHTML = this.date    
-            this.getObservations()
-            this.getReflections()
-        const button = document.getElementById("new-day-button")
-            button.addEventListener("click", event => {
-                this.createDay(event)
-            }) //creating a day here, upon each instantiation, is creating multiple instances-
-               //need to put this eventlistener somewhere else-but where?
+            containerDiv.innerHTML = this.date  
+        const obsInput = document.createElement('input')
+           obsInput.type = "text"
+           obsInput.id = "observations-form"
+           obsInput.placeholder = "New Observation"
+        const submitObservation = document.createElement('button')
+            submitObservation.id = "observations-button"
+            containerDiv.append(obsInput)
+            containerDiv.append(submitObservation)    
+        const refInput = document.createElement('input')
+            refInput.type = "text"
+            refInput.id = "reflection-form"
+            refInput.placeholder = "New Reflection"
+        const submitReflection = document.createElement('button')  
+            submitReflection.id = "reflections-button"
+            containerDiv.append(refInput)
+            containerDiv.append(submitReflection)
+        this.getObservations()
+        this.getReflections()
     }
-    
 
     getObservations() {
         const observations = this.observations
@@ -84,10 +117,11 @@ class Day {
         const ul = document.createElement('ul') //this might not happen here, but only happen when we create a new day, then create new obs and refs????
         containerDiv.append(ul)
         const observationsLi = document.createElement('li')
-        observationsLi.classList.add("day-container")
+        //observationsLi.classList.add("day-container")
         observationsLi.id = "observations-container"
         containerDiv.append(observationsLi)
         observationsLi.innerHTML = observation.content
+
     }
 
     displayReflections(reflection) {
@@ -95,31 +129,16 @@ class Day {
         const ul = document.createElement('ul')
         containerDiv.append(ul)
         const reflectionsLi = document.createElement('li')
-        reflectionsLi.classList.add("day-container")
+        //reflectionsLi.classList.add("day-container")
         reflectionsLi.id = "reflections-container"
         containerDiv.append(reflectionsLi)
         reflectionsLi.innerHTML = reflection.content
+        //const input = document.createElement('input')
+          //  input.type = "text"
+        //const submitReflection = document.createElement('button')
+        //reflectionsLi.append(input)
     }
 
-    createDay(event) {
-        event.preventDefault()
-        const content = document.getElementById("new-day-info").value
-        fetch(DAYS_URL, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                day: content
-            })
-        })
-        //.then(resp => resp.json())
-        // .then(newDay => {
-        //     console.log(newDay)
-        // })
-    }
-
-    //deleteDay(event) //next make event listener
 } 
 
 class Observation {
@@ -127,11 +146,6 @@ class Observation {
         this.content = obs.content
         console.log(obs.content) 
     }
-
-    createObservation() {
-
-    }
-
 }
 
 class Reflection {
