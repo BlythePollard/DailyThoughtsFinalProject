@@ -2,6 +2,7 @@
 const BASE_URL = "http://localhost:3000"
 const DAYS_URL = `${BASE_URL}/days`
 const OBSERVATIONS_URL = `${BASE_URL}/observations`
+const REFLECTIONS_URL = `${BASE_URL}/reflections`
 
 document.addEventListener("DOMContentLoaded", () => {
     fetchDays()
@@ -170,8 +171,21 @@ class Observation {
 
 
 class Reflection {
-    constructor(ref) {
+    constructor(day, ref) {
+        this.day = day.id
         this.content = ref.content
-        console.log(ref.content)
+    }
+
+    static createReflection(day, event) {
+        fetch (REFLECTIONS_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+             body: JSON.stringify({
+                 reflection: content,
+                 day: day
+             })
+        })
     }
 }
