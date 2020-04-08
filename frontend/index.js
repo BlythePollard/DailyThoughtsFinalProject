@@ -8,7 +8,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const button = document.getElementById("new-day-button")
     button.addEventListener("click", event => {
     createDay(event) })
-   
 })
 
 function fetchDays() {
@@ -70,6 +69,7 @@ class Day {
         this.reflections = reflections
         this.showDay()
     }
+
 //separate storage of records from how it's getting rendered
     showDay() { 
         const main = document.querySelector("main")
@@ -86,7 +86,10 @@ class Day {
         const submitObservation = document.createElement('button')
             submitObservation.id = "observations-button"
             containerDiv.append(obsInput)
-            containerDiv.append(submitObservation)    
+            containerDiv.append(submitObservation)
+            submitObservation.addEventListener("click", event => {
+                Observation.createObservation(this, event)
+            })    
         const refInput = document.createElement('input')
             refInput.type = "text"
             refInput.id = "reflection-form"
@@ -97,11 +100,6 @@ class Day {
             containerDiv.append(submitReflection)
         this.getObservations()
         this.getReflections()
-
-        // const observationsButton = document.getElementById("observations-button")
-        // observationsButton.addEventListener("click", event => {
-        // Observation.createObservation(this, event)
-        })
     }
 
     getObservations() {
@@ -153,17 +151,9 @@ class Observation {
     constructor(day, obs) {
         this.day = day.id
         this.content = obs.content
-        //this.newObs(day)
     }
 
-    // newObs(day) {
-    //     const observationsButton = document.getElementById("observations-button")
-    //     observationsButton.addEventListener("click", event => {
-    //     this.createObservation(day, event)
-    //     })
-    // }   
-
-    createObservation(day, event) {
+    static createObservation(day, event) {
     const content = event.target.previousSibling.value
     fetch(OBSERVATIONS_URL, {
         method: "POST", 
@@ -177,9 +167,6 @@ class Observation {
     })
 }
 }
-
-//alright, having same issue with double persistence above--WHERE TO PUT THE EVENT LISTENER?!
-//WHAT IF I PUT EVENT LISTENER IN SHOWDAY????
 
 
 class Reflection {
