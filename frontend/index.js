@@ -99,6 +99,9 @@ class Day {
             submitReflection.id = "reflections-button"
             containerDiv.append(refInput)
             containerDiv.append(submitReflection)
+            submitReflection.addEventListener("click", event => {
+                Reflection.createReflection(this, event)
+            })
         this.getObservations()
         this.getReflections()
     }
@@ -114,7 +117,7 @@ class Day {
     getReflections() {
         const reflections = this.reflections
         reflections.forEach((ref) => {
-            let thisReflection = new Reflection(ref)
+            let thisReflection = new Reflection(this, ref)
             this.displayReflections(thisReflection)
         })
     }
@@ -177,6 +180,8 @@ class Reflection {
     }
 
     static createReflection(day, event) {
+        console.log(event.target.previousSibling)
+        const content = event.target.previousSibling.value
         fetch (REFLECTIONS_URL, {
             method: "POST",
             headers: {
