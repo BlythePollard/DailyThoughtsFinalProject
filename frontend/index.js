@@ -97,6 +97,11 @@ class Day {
             containerDiv.append(submitReflection)
         this.getObservations()
         this.getReflections()
+
+        // const observationsButton = document.getElementById("observations-button")
+        // observationsButton.addEventListener("click", event => {
+        // Observation.createObservation(this, event)
+        })
     }
 
     getObservations() {
@@ -148,15 +153,15 @@ class Observation {
     constructor(day, obs) {
         this.day = day.id
         this.content = obs.content
-        this.newObs(day)
+        //this.newObs(day)
     }
 
-    newObs(day) {
-        const observationsButton = document.getElementById("observations-button")
-        observationsButton.addEventListener("click", event => {
-        this.createObservation(day, event)
-        })
-    }   
+    // newObs(day) {
+    //     const observationsButton = document.getElementById("observations-button")
+    //     observationsButton.addEventListener("click", event => {
+    //     this.createObservation(day, event)
+    //     })
+    // }   
 
     createObservation(day, event) {
     const content = event.target.previousSibling.value
@@ -174,6 +179,7 @@ class Observation {
 }
 
 //alright, having same issue with double persistence above--WHERE TO PUT THE EVENT LISTENER?!
+//WHAT IF I PUT EVENT LISTENER IN SHOWDAY????
 
 
 class Reflection {
