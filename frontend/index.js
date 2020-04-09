@@ -17,6 +17,8 @@ function fetchDays() {
     .then(json => {
         json.forEach(day => {
             let newDay = new Day(day.id, day.date, day.observations, day.reflections)
+            console.log(newDay)
+            Day.showDay(newDay)
             //could do show logic here
         })
     })
@@ -42,25 +44,6 @@ function createDay(event) {
     containerDiv.innerHTML = content   
 }
 
-// // const observationsButton = document.getElementById("observations-button")
-// // observationsButton.addEventListener("click", event => {
-// //     createObservation(event)
-// // })
-
-// function createObservation(event) {
-//     const content = event.target.previousSibling.value
-//     fetch(OBSERVATIONS_URL, {
-//         method: "POST", 
-//         headers: {
-//             "Content-Type": "application/json", 
-//         },
-//         body: JSON.stringify({
-//             observation: content
-//         })
-//     })
-// }
-
-
 
 class Day {
     constructor(id, date, observations, reflections) {
@@ -68,18 +51,19 @@ class Day {
         this.date = date 
         this.observations = observations
         this.reflections = reflections
-        this.showDay()
+        //this.showDay()
     }
 
 //separate storage of records from how it's getting rendered
-    showDay() { 
+    static showDay(day) { 
+       // console.log(day)
         const main = document.querySelector("main")
         const containerDiv = document.createElement('div')
         const br = document.createElement("BR")
             main.append(containerDiv)
             containerDiv.classList.add("day-container")
             containerDiv.id = "main-container"
-            containerDiv.innerHTML = this.date  
+            containerDiv.innerHTML = day.date  
         const obsInput = document.createElement('input')
            obsInput.type = "text"
            obsInput.id = "observations-form"
@@ -89,7 +73,7 @@ class Day {
             containerDiv.append(obsInput)
             containerDiv.append(submitObservation)
             submitObservation.addEventListener("click", event => {
-                Observation.createObservation(this, event)
+                Observation.createObservation(day, event)
             })    
         const refInput = document.createElement('input')
             refInput.type = "text"
@@ -100,10 +84,20 @@ class Day {
             containerDiv.append(refInput)
             containerDiv.append(submitReflection)
             submitReflection.addEventListener("click", event => {
-                Reflection.createReflection(this, event)
+                Reflection.createReflection(day, event)
             })
-        this.getObservations()
-        this.getReflections()
+        const obsHeader = document.createElement('lh')   
+        obsHeader.id = "observations-header"
+        obsHeader.innerHTML = "Observations"
+        containerDiv.append(obsHeader) 
+        obsHeader.append(br)
+        const refHeader = document.createElement('lh')  
+        refHeader.id = "reflections-header" 
+        refHeader.innerHTML = "Reflections"
+        containerDiv.append(refHeader) 
+        //refHeader.append(br)
+        day.getObservations()
+        day.getReflections()
     }
 
     getObservations() {
@@ -123,30 +117,24 @@ class Day {
     }
 
     displayObservations(observation) {
-        const containerDiv = document.getElementById('main-container') //big issue here: what happens when we have multiples????? 
-        const ul = document.createElement('ul') //this might not happen here, but only happen when we create a new day, then create new obs and refs????
-        containerDiv.append(ul)
+        const lh = document.getElementById('observations-header') 
+        const ul = document.createElement('ul') 
+        lh.append(ul)
         const observationsLi = document.createElement('li')
-        //observationsLi.classList.add("day-container")
         observationsLi.id = "observations-container"
-        containerDiv.append(observationsLi)
+        ul.append(observationsLi)
         observationsLi.innerHTML = observation.content
 
     }
 
     displayReflections(reflection) {
-        const containerDiv = document.getElementById('main-container')
+        const lh = document.getElementById('reflections-header')
         const ul = document.createElement('ul')
-        containerDiv.append(ul)
+        lh.append(ul)
         const reflectionsLi = document.createElement('li')
-        //reflectionsLi.classList.add("day-container")
         reflectionsLi.id = "reflections-container"
-        containerDiv.append(reflectionsLi)
+        ul.append(reflectionsLi)
         reflectionsLi.innerHTML = reflection.content
-        //const input = document.createElement('input')
-          //  input.type = "text"
-        //const submitReflection = document.createElement('button')
-        //reflectionsLi.append(input)
     }
 
 } 
@@ -169,7 +157,12 @@ class Observation {
             day: day
         })
     })
-}
+    //add li with target value to observations-list id
+    }
+
+    //static deleteObservation(day, event)
+
+
 }
 
 
@@ -194,3 +187,25 @@ class Reflection {
         })
     }
 }
+
+
+
+
+
+// // const observationsButton = document.getElementById("observations-button")
+// // observationsButton.addEventListener("click", event => {
+// //     createObservation(event)
+// // })
+
+// function createObservation(event) {
+//     const content = event.target.previousSibling.value
+//     fetch(OBSERVATIONS_URL, {
+//         method: "POST", 
+//         headers: {
+//             "Content-Type": "application/json", 
+//         },
+//         body: JSON.stringify({
+//             observation: content
+//         })
+//     })
+// }
