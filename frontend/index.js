@@ -18,8 +18,7 @@ function fetchDays() {
         json.forEach(day => {
             let newDay = new Day(day.id, day.date, day.observations, day.reflections)
             console.log(newDay)
-            Day.showDay(newDay)
-            //could do show logic here
+            newDay.showDay()
         })
     })
 }
@@ -51,19 +50,17 @@ class Day {
         this.date = date 
         this.observations = observations
         this.reflections = reflections
-        //this.showDay()
     }
 
 //separate storage of records from how it's getting rendered
-    static showDay(day) { 
-       // console.log(day)
+     showDay() { 
         const main = document.querySelector("main")
         const containerDiv = document.createElement('div')
         const br = document.createElement("BR")
             main.append(containerDiv)
             containerDiv.classList.add("day-container")
             containerDiv.id = "main-container"
-            containerDiv.innerHTML = day.date  
+            containerDiv.innerHTML = this.date  
         const obsInput = document.createElement('input')
            obsInput.type = "text"
            obsInput.id = "observations-form"
@@ -73,7 +70,7 @@ class Day {
             containerDiv.append(obsInput)
             containerDiv.append(submitObservation)
             submitObservation.addEventListener("click", event => {
-                Observation.createObservation(day, event)
+                Observation.createObservation(this, event)
             })    
         const refInput = document.createElement('input')
             refInput.type = "text"
@@ -84,7 +81,7 @@ class Day {
             containerDiv.append(refInput)
             containerDiv.append(submitReflection)
             submitReflection.addEventListener("click", event => {
-                Reflection.createReflection(day, event)
+                Reflection.createReflection(this, event)
             })
         const obsHeader = document.createElement('lh')   
         obsHeader.id = "observations-header"
@@ -96,8 +93,8 @@ class Day {
         refHeader.innerHTML = "Reflections"
         containerDiv.append(refHeader) 
         //refHeader.append(br)
-        day.getObservations()
-        day.getReflections()
+        this.getObservations()
+        this.getReflections()
     }
 
     getObservations() {
