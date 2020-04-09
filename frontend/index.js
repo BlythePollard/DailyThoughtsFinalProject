@@ -97,26 +97,10 @@ class Day {
         this.reflections.forEach(reflection => {
             this.displayReflections(reflection)
         })
-        //this.getReflections()
     }
 
-    // getObservations() {
-    //     const observations = this.observations
-    //     observations.forEach((obs) => {
-    //         let thisObservation = new Observation(this, obs)
-    //         this.displayObservations(thisObservation)
-    //     })
-    // }
-
-    // getReflections() {
-    //     const reflections = this.reflections
-    //     reflections.forEach((ref) => {
-    //         let thisReflection = new Reflection(this, ref)
-    //         this.displayReflections(thisReflection)
-    //     })
-    // }
-
     displayObservations(observation) {
+        //console.log(observation)
         const lh = document.getElementById('observations-header') 
         const ul = document.createElement('ul') 
         lh.append(ul)
@@ -124,8 +108,8 @@ class Day {
         observationsLi.id = "observations-container"
         ul.append(observationsLi)
         observationsLi.innerHTML = observation.content
-
     }
+    // } //do these two need to go into the Observation class? I think they do! But how to call them?
 
     displayReflections(reflection) {
         const lh = document.getElementById('reflections-header')
@@ -137,7 +121,8 @@ class Day {
         reflectionsLi.innerHTML = reflection.content
     }
 
-} 
+}
+
 
 class Observation {
     constructor(day, obs) {
@@ -157,11 +142,17 @@ class Observation {
             day: day
         })
     })
-    //add li with target value to observations-list id
+    .then(resp => resp.json())
+    .then(newObservation => {
+        const lh = document.getElementById('observations-header') 
+        const ul = document.createElement('ul') 
+        lh.append(ul)
+        const observationsLi = document.createElement('li')
+        observationsLi.id = "observations-container"
+        ul.append(observationsLi)
+        observationsLi.innerHTML = newObservation.content
+    })
     }
-
-    //static deleteObservation(day, event)
-
 
 }
 
@@ -173,7 +164,6 @@ class Reflection {
     }
 
     static createReflection(day, event) {
-        //console.log(event.target.previousSibling)
         const content = event.target.previousSibling.value
         fetch (REFLECTIONS_URL, {
             method: "POST",
@@ -185,6 +175,16 @@ class Reflection {
                  day: day
              })
         })
+        .then(resp => resp.json())
+        .then(newReflection => {
+            const lh = document.getElementById('reflections-header')
+            const ul = document.createElement('ul')
+            lh.append(ul)
+            const reflectionsLi = document.createElement('li')
+            reflectionsLi.id = "reflections-container"
+            ul.append(reflectionsLi)
+            reflectionsLi.innerHTML = newReflection.content
+    })
     }
 }
 
@@ -209,3 +209,20 @@ class Reflection {
 //         })
 //     })
 // }
+
+
+    // getObservations() {
+    //     const observations = this.observations
+    //     observations.forEach((obs) => {
+    //         let thisObservation = new Observation(this, obs)
+    //         this.displayObservations(thisObservation)
+    //     })
+    // }
+
+    // getReflections() {
+    //     const reflections = this.reflections
+    //     reflections.forEach((ref) => {
+    //         let thisReflection = new Reflection(this, ref)
+    //         this.displayReflections(thisReflection)
+    //     })
+    // }
