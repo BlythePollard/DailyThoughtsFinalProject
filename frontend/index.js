@@ -17,7 +17,6 @@ function fetchDays() {
     .then(json => {
         json.forEach(day => {
             let newDay = new Day(day.id, day.date, day.observations, day.reflections)
-            console.log(newDay)
             newDay.showDay()
         })
     })
@@ -83,35 +82,39 @@ class Day {
             submitReflection.addEventListener("click", event => {
                 Reflection.createReflection(this, event)
             })
-        const obsHeader = document.createElement('lh')   
-        obsHeader.id = "observations-header"
-        obsHeader.innerHTML = "Observations"
-        containerDiv.append(obsHeader) 
-        obsHeader.append(br)
+        const obsHeader = document.createElement('lh')
+            obsHeader.id = "observations-header"
+            obsHeader.innerHTML = "Observations"
+            containerDiv.append(obsHeader) 
+            obsHeader.append(br)  
         const refHeader = document.createElement('lh')  
-        refHeader.id = "reflections-header" 
-        refHeader.innerHTML = "Reflections"
-        containerDiv.append(refHeader) 
-        //refHeader.append(br)
-        this.getObservations()
-        this.getReflections()
+            refHeader.id = "reflections-header" 
+            refHeader.innerHTML = "Reflections"
+            containerDiv.append(refHeader)  
+        this.observations.forEach(observation => {
+            this.displayObservations(observation)
+        })
+        this.reflections.forEach(reflection => {
+            this.displayReflections(reflection)
+        })
+        //this.getReflections()
     }
 
-    getObservations() {
-        const observations = this.observations
-        observations.forEach((obs) => {
-            let thisObservation = new Observation(this, obs)
-            this.displayObservations(thisObservation)
-        })
-    }
+    // getObservations() {
+    //     const observations = this.observations
+    //     observations.forEach((obs) => {
+    //         let thisObservation = new Observation(this, obs)
+    //         this.displayObservations(thisObservation)
+    //     })
+    // }
 
-    getReflections() {
-        const reflections = this.reflections
-        reflections.forEach((ref) => {
-            let thisReflection = new Reflection(this, ref)
-            this.displayReflections(thisReflection)
-        })
-    }
+    // getReflections() {
+    //     const reflections = this.reflections
+    //     reflections.forEach((ref) => {
+    //         let thisReflection = new Reflection(this, ref)
+    //         this.displayReflections(thisReflection)
+    //     })
+    // }
 
     displayObservations(observation) {
         const lh = document.getElementById('observations-header') 
@@ -170,7 +173,7 @@ class Reflection {
     }
 
     static createReflection(day, event) {
-        console.log(event.target.previousSibling)
+        //console.log(event.target.previousSibling)
         const content = event.target.previousSibling.value
         fetch (REFLECTIONS_URL, {
             method: "POST",
