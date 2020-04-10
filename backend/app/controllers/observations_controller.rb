@@ -4,4 +4,10 @@ class ObservationsController < ApplicationController
         render json: @observation
     end
 
+    def destroy
+        observation = Observation.find_by(id: params[:id])
+        observation.destroy
+        render json: observation
+    end
+
 end

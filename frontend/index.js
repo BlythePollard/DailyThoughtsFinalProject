@@ -153,6 +153,9 @@ class Day {
         deleteButton.innerHTML = "Delete"
         deleteButton.id = `observation-delete-${observation.id}`
         observationsLi.append(deleteButton)
+        deleteButton.addEventListener("click", event => {
+            Observation.deleteObservation(observation, event)
+        })
     }
 
     displayReflections(reflection) {
@@ -167,6 +170,9 @@ class Day {
         deleteButton.innerHTML = "Delete"
         deleteButton.id = `reflection-delete-${reflection.id}`
         reflectionsLi.append(deleteButton)
+        deleteButton.addEventListener("click", event => {
+            Reflection.deleteReflection(reflection, event)
+        })
     }
 
 }
@@ -203,11 +209,20 @@ class Observation {
         deleteButton.innerHTML = "Delete"
         deleteButton.id = `observation-delete-${newObservation.id}`
         observationsLi.append(deleteButton)
+        deleteButton.addEventListener("click", event => {
+            this.deleteObservation(newObservation, event)
+        })
     })
     }
 
     static deleteObservation(observation, event) {
-        
+        fetch(`${OBSERVATIONS_URL}/${observation.id}`, {
+            method: "DELETE"
+        })
+        .then(resp => resp.json())
+        .then(data => {
+            event.target.parentElement.remove()
+        })
     }
 }
 
@@ -243,7 +258,20 @@ class Reflection {
             deleteButton.innerHTML = "Delete"
             deleteButton.id = `observation-delete-${newReflection.id}`
             reflectionsLi.append(deleteButton)
+            deleteButton.addEventListener("click", event => {
+            this.deleteReflection(newReflection, event)
+            })
     })
+    }
+
+    static deleteReflection(reflection, event) {
+        fetch(`${REFLECTIONS_URL}/${reflection.id}`, {
+            method: "DELETE"
+        })
+        .then(resp => resp.json())
+        .then(data => {
+            event.target.parentElement.remove()
+        })
     }
 }
 
