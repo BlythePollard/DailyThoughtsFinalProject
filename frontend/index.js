@@ -17,7 +17,9 @@ function fetchDays() {
     .then(json => {
         json.forEach(day => {
             let newDay = new Day(day.id, day.date, day.observations, day.reflections)
+            console.log(newDay)
             newDay.showDay()
+            
         })
     })
 }
@@ -34,13 +36,54 @@ function createDay(event) {
             day: content
         })
     })
-    const main = document.querySelector("main")
-    const containerDiv = document.createElement('div')
-    main.append(containerDiv)
-    containerDiv.classList.add("day-container")
-    containerDiv.id = "main-container"
-    containerDiv.innerHTML = content   
-}
+
+    //when creating day, not showing new obs & new ref buttons until refresh
+    .then(resp => resp.json())
+    .then(newDay => {
+           const main = document.querySelector("main")
+           const containerDiv = document.createElement('div')
+           const br = document.createElement("BR")
+
+           main.append(containerDiv)
+           containerDiv.classList.add("day-container")
+           containerDiv.id = "main-container"
+           containerDiv.innerHTML = content   
+           const obsInput = document.createElement('input')
+           obsInput.type = "text"
+           obsInput.id = "observations-form"
+           obsInput.placeholder = "New Observation"
+        const submitObservation = document.createElement('button')
+            submitObservation.id = "observations-button"
+            containerDiv.append(obsInput)
+            containerDiv.append(submitObservation)
+            submitObservation.addEventListener("click", event => {
+                Observation.createObservation(newDay, event) //maybe this NEEDS to be an instance function, not class function?
+            })    
+        const refInput = document.createElement('input')
+            refInput.type = "text"
+            refInput.id = "reflection-form"
+            refInput.placeholder = "New Reflection"
+        const submitReflection = document.createElement('button')  
+            submitReflection.id = "reflections-button"
+            containerDiv.append(refInput)
+            containerDiv.append(submitReflection)
+            submitReflection.addEventListener("click", event => {
+                Reflection.createReflection(newDay, event)
+            })
+        const obsHeader = document.createElement('lh')
+            obsHeader.id = `observations-header-${newDay.id}` //id
+            obsHeader.innerHTML = "Observations"
+            containerDiv.append(obsHeader) 
+            obsHeader.append(br)  
+        const refHeader = document.createElement('lh')  //append day id here too
+            refHeader.id = `reflections-header-${newDay.id}` //id
+            refHeader.innerHTML = "Reflections"
+            containerDiv.append(refHeader)  
+
+    })
+    }
+    
+
 
 
 class Day {
@@ -69,7 +112,7 @@ class Day {
             containerDiv.append(obsInput)
             containerDiv.append(submitObservation)
             submitObservation.addEventListener("click", event => {
-                Observation.createObservation(this, event)
+                Observation.createObservation(this, event) //maybe this NEEDS to be an instance function, not class function?
             })    
         const refInput = document.createElement('input')
             refInput.type = "text"
@@ -83,12 +126,12 @@ class Day {
                 Reflection.createReflection(this, event)
             })
         const obsHeader = document.createElement('lh')
-            obsHeader.id = "observations-header"
+            obsHeader.id = `observations-header-${this.id}` //id
             obsHeader.innerHTML = "Observations"
             containerDiv.append(obsHeader) 
             obsHeader.append(br)  
-        const refHeader = document.createElement('lh')  
-            refHeader.id = "reflections-header" 
+        const refHeader = document.createElement('lh')  //append day id here too
+            refHeader.id = `reflections-header-${this.id}` //id
             refHeader.innerHTML = "Reflections"
             containerDiv.append(refHeader)  
         this.observations.forEach(observation => {
@@ -99,9 +142,10 @@ class Day {
         })
     }
 
+
     displayObservations(observation) {
         //console.log(observation)
-        const lh = document.getElementById('observations-header') 
+        const lh = document.getElementById(`observations-header-${this.id}`) 
         const ul = document.createElement('ul') 
         lh.append(ul)
         const observationsLi = document.createElement('li')
@@ -112,7 +156,7 @@ class Day {
     // } //do these two need to go into the Observation class? I think they do! But how to call them?
 
     displayReflections(reflection) {
-        const lh = document.getElementById('reflections-header')
+        const lh = document.getElementById(`reflections-header-${this.id}`)
         const ul = document.createElement('ul')
         lh.append(ul)
         const reflectionsLi = document.createElement('li')
@@ -144,7 +188,7 @@ class Observation {
     })
     .then(resp => resp.json())
     .then(newObservation => {
-        const lh = document.getElementById('observations-header') 
+        const lh = document.getElementById(`observations-header-${day.id}`) 
         const ul = document.createElement('ul') 
         lh.append(ul)
         const observationsLi = document.createElement('li')
@@ -177,7 +221,7 @@ class Reflection {
         })
         .then(resp => resp.json())
         .then(newReflection => {
-            const lh = document.getElementById('reflections-header')
+            const lh = document.getElementById(`reflections-header-${day.id}`)
             const ul = document.createElement('ul')
             lh.append(ul)
             const reflectionsLi = document.createElement('li')
