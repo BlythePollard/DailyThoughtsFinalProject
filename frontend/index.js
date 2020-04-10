@@ -25,7 +25,6 @@ function fetchDays() {
 }
 
 function createDay(event) {
-    //event.preventDefault()
     const content = document.getElementById("new-day-info").value
     fetch(DAYS_URL, {
         method: "POST",
@@ -36,8 +35,6 @@ function createDay(event) {
             day: content
         })
     })
-
-    //when creating day, not showing new obs & new ref buttons until refresh
     .then(resp => resp.json())
     .then(newDay => {
            const main = document.querySelector("main")
@@ -112,7 +109,7 @@ class Day {
             containerDiv.append(obsInput)
             containerDiv.append(submitObservation)
             submitObservation.addEventListener("click", event => {
-                Observation.createObservation(this, event) //maybe this NEEDS to be an instance function, not class function?
+                Observation.createObservation(this, event) 
             })    
         const refInput = document.createElement('input')
             refInput.type = "text"
@@ -126,14 +123,14 @@ class Day {
                 Reflection.createReflection(this, event)
             })
         const obsHeader = document.createElement('lh')
-            obsHeader.id = `observations-header-${this.id}` //id
+            obsHeader.id = `observations-header-${this.id}` 
             obsHeader.innerHTML = "Observations"
             containerDiv.append(obsHeader) 
             obsHeader.append(br)  
-        const refHeader = document.createElement('lh')  //append day id here too
-            refHeader.id = `reflections-header-${this.id}` //id
+        const refHeader = document.createElement('lh')  
+            refHeader.id = `reflections-header-${this.id}` 
             refHeader.innerHTML = "Reflections"
-            containerDiv.append(refHeader)  
+            containerDiv.append(refHeader)      
         this.observations.forEach(observation => {
             this.displayObservations(observation)
         })
@@ -144,25 +141,32 @@ class Day {
 
 
     displayObservations(observation) {
-        //console.log(observation)
+        console.log(observation.id)
         const lh = document.getElementById(`observations-header-${this.id}`) 
         const ul = document.createElement('ul') 
         lh.append(ul)
         const observationsLi = document.createElement('li')
-        observationsLi.id = "observations-container"
+        observationsLi.id = `observations-container-${observation.id}`
         ul.append(observationsLi)
         observationsLi.innerHTML = observation.content
+        const deleteButton = document.createElement('button')
+        deleteButton.innerHTML = "Delete"
+        deleteButton.id = `observation-delete-${observation.id}`
+        observationsLi.append(deleteButton)
     }
-    // } //do these two need to go into the Observation class? I think they do! But how to call them?
 
     displayReflections(reflection) {
         const lh = document.getElementById(`reflections-header-${this.id}`)
         const ul = document.createElement('ul')
         lh.append(ul)
         const reflectionsLi = document.createElement('li')
-        reflectionsLi.id = "reflections-container"
+        reflectionsLi.id = `reflections-container-${reflection.id}`
         ul.append(reflectionsLi)
         reflectionsLi.innerHTML = reflection.content
+        const deleteButton = document.createElement('button')
+        deleteButton.innerHTML = "Delete"
+        deleteButton.id = `reflection-delete-${reflection.id}`
+        reflectionsLi.append(deleteButton)
     }
 
 }
@@ -192,12 +196,19 @@ class Observation {
         const ul = document.createElement('ul') 
         lh.append(ul)
         const observationsLi = document.createElement('li')
-        observationsLi.id = "observations-container"
+        observationsLi.id = `observations-container-${newObservation.id}`
         ul.append(observationsLi)
         observationsLi.innerHTML = newObservation.content
+        const deleteButton = document.createElement('button')
+        deleteButton.innerHTML = "Delete"
+        deleteButton.id = `observation-delete-${newObservation.id}`
+        observationsLi.append(deleteButton)
     })
     }
 
+    static deleteObservation(observation, event) {
+        
+    }
 }
 
 
@@ -225,9 +236,13 @@ class Reflection {
             const ul = document.createElement('ul')
             lh.append(ul)
             const reflectionsLi = document.createElement('li')
-            reflectionsLi.id = "reflections-container"
+            reflectionsLi.id = `reflections-container-${newReflection.id}`
             ul.append(reflectionsLi)
             reflectionsLi.innerHTML = newReflection.content
+            const deleteButton = document.createElement('button')
+            deleteButton.innerHTML = "Delete"
+            deleteButton.id = `observation-delete-${newReflection.id}`
+            reflectionsLi.append(deleteButton)
     })
     }
 }
