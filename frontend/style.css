@@ -1,6 +1,35 @@
-.day-container {
-    border: 2px solid black;
+#header {
+    border: 2px solid white;
+    text-align: center;
+    border-radius: 25px;
+    margin-left: auto;
+    margin-right: auto;
+    background: #e4f7f2;
     box-sizing: content-box; 
     padding: 10px;
     width: 400px;
 }
+
+#new-day-form {
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: content-box; 
+    padding: 10px;
+    width: 400px;
+}
+
+.day-container {
+    border: 2px solid white;
+    border-radius: 25px;
+    margin-left: auto;
+    margin-right: auto;
+    background: #c9f2e7;
+    box-sizing: content-box; 
+    padding: 10px;
+    width: 400px;
+}
+
+.delete {
+    margin: 5px;
+}
+

@@ -152,6 +152,7 @@ class Day {
         const deleteButton = document.createElement('button')
         deleteButton.innerHTML = "Delete"
         deleteButton.id = `observation-delete-${observation.id}`
+        deleteButton.classList.add('delete')
         observationsLi.append(deleteButton)
         deleteButton.addEventListener("click", event => {
             Observation.deleteObservation(observation, event)
@@ -169,6 +170,7 @@ class Day {
         const deleteButton = document.createElement('button')
         deleteButton.innerHTML = "Delete"
         deleteButton.id = `reflection-delete-${reflection.id}`
+        deleteButton.classList.add('delete')
         reflectionsLi.append(deleteButton)
         deleteButton.addEventListener("click", event => {
             Reflection.deleteReflection(reflection, event)
@@ -208,6 +210,7 @@ class Observation {
         const deleteButton = document.createElement('button')
         deleteButton.innerHTML = "Delete"
         deleteButton.id = `observation-delete-${newObservation.id}`
+        deleteButton.classList.add('delete')
         observationsLi.append(deleteButton)
         deleteButton.addEventListener("click", event => {
             this.deleteObservation(newObservation, event)
@@ -257,6 +260,7 @@ class Reflection {
             const deleteButton = document.createElement('button')
             deleteButton.innerHTML = "Delete"
             deleteButton.id = `observation-delete-${newReflection.id}`
+            deleteButton.classList.add('delete')
             reflectionsLi.append(deleteButton)
             deleteButton.addEventListener("click", event => {
             this.deleteReflection(newReflection, event)
