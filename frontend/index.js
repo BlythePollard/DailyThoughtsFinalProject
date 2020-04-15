@@ -91,7 +91,6 @@ class Day {
         this.reflections = reflections
     }
 
-//separate storage of records from how it's getting rendered
      showDay() { 
         const main = document.querySelector("main")
         const containerDiv = document.createElement('div')
@@ -278,42 +277,3 @@ class Reflection {
         })
     }
 }
-
-
-
-
-
-// // const observationsButton = document.getElementById("observations-button")
-// // observationsButton.addEventListener("click", event => {
-// //     createObservation(event)
-// // })
-
-// function createObservation(event) {
-//     const content = event.target.previousSibling.value
-//     fetch(OBSERVATIONS_URL, {
-//         method: "POST", 
-//         headers: {
-//             "Content-Type": "application/json", 
-//         },
-//         body: JSON.stringify({
-//             observation: content
-//         })
-//     })
-// }
-
-
-    // getObservations() {
-    //     const observations = this.observations
-    //     observations.forEach((obs) => {
-    //         let thisObservation = new Observation(this, obs)
-    //         this.displayObservations(thisObservation)
-    //     })
-    // }
-
-    // getReflections() {
-    //     const reflections = this.reflections
-    //     reflections.forEach((ref) => {
-    //         let thisReflection = new Reflection(this, ref)
-    //         this.displayReflections(thisReflection)
-    //     })
-    // }

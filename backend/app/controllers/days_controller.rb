@@ -28,9 +28,4 @@ class DaysController < ApplicationController
         end
     end
 
-    # private
-
-    # def day_params
-    #     params.require(:day).permit(:content)
-    # end
 end
